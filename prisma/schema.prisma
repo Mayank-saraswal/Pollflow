@@ -1,0 +1,135 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
+  password      String?
+  accounts      Account[]
+  sessions      Session[]
+  polls         Poll[]
+  responses     Response[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Poll {
+  id          String     @id @default(cuid())
+  title       String
+  description String?    @db.Text
+  shareToken  String     @unique
+  creatorId   String
+  creator     User       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  status      PollStatus @default(ACTIVE)
+  voterMode   VoterMode  @default(ANYONE)
+  isAnonymous Boolean    @default(false)
+  isPublished Boolean    @default(false)
+  expiresAt   DateTime?
+  questions   Question[]
+  responses   Response[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([shareToken])
+  @@index([creatorId])
+}
+
+enum PollStatus {
+  ACTIVE
+  EXPIRED
+  PUBLISHED
+}
+
+enum VoterMode {
+  ANYONE
+  AUTHENTICATED_ONLY
+}
+
+model Question {
+  id          String   @id @default(cuid())
+  pollId      String
+  poll        Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  text        String
+  imageUrl    String?
+  isMandatory Boolean  @default(true)
+  order       Int
+  options     Option[]
+  answers     Answer[]
+
+  @@index([pollId])
+}
+
+model Option {
+  id         String   @id @default(cuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  text       String
+  imageUrl   String?
+  answers    Answer[]
+
+  @@index([questionId])
+}
+
+model Response {
+  id           String   @id @default(cuid())
+  pollId       String
+  poll         Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  respondentId String?
+  respondent   User?    @relation(fields: [respondentId], references: [id], onDelete: SetNull)
+  answers      Answer[]
+  ipHash       String?
+  submittedAt  DateTime @default(now())
+
+  @@index([pollId])
+  @@unique([pollId, respondentId])
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  responseId String
+  response   Response @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+  optionId   String
+  option     Option   @relation(fields: [optionId], references: [id])
+
+  @@index([responseId])
+  @@index([questionId, optionId])
+}
