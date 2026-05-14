@@ -1,14 +1,21 @@
-import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import { auth } from '@/lib/auth'
 import { DashboardSidebar } from '@/components/layout/dashboard-sidebar'
 
-export const metadata: Metadata = { title: 'Dashboard' }
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const session = await auth()
+  if (!session?.user) redirect('/login')
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen">
-      <DashboardSidebar />
-      <main className="flex-1 overflow-auto">
-        <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="min-h-screen bg-[#09090B] flex">
+      <DashboardSidebar user={session.user} />
+      <main className="flex-1 min-h-screen overflow-y-auto
+                       pl-0 md:pl-64 transition-all duration-300">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 py-8">
           {children}
         </div>
       </main>

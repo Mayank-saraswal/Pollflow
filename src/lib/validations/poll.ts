@@ -10,7 +10,7 @@ export const questionSchema = z.object({
   id:          z.string().optional(),
   text:        z.string().min(1, 'Question text required').max(500),
   imageUrl:    z.string().url().optional().nullable(),
-  isMandatory: z.boolean().default(true),
+  isMandatory: z.boolean(),
   order:       z.number().int().min(0),
   options:     z
     .array(optionSchema)
@@ -21,9 +21,9 @@ export const questionSchema = z.object({
 export const createPollSchema = z.object({
   title:       z.string().min(3, 'Title must be at least 3 characters').max(100),
   description: z.string().max(500).optional().nullable(),
-  voterMode:   z.enum(['ANYONE', 'AUTHENTICATED_ONLY']).default('ANYONE'),
-  isAnonymous: z.boolean().default(false),
-  expiresAt:   z.string().datetime().optional().nullable(),
+  voterMode:   z.enum(['ANYONE', 'AUTHENTICATED_ONLY']),
+  isAnonymous: z.boolean(),
+  expiresAt:   z.string().optional().nullable(),
   questions:   z
     .array(questionSchema)
     .min(1, 'Poll needs at least 1 question')

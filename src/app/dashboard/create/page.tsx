@@ -1,19 +1,16 @@
-import type { Metadata } from 'next'
 import { PageHeader } from '@/components/shared/page-header'
+import { PollBuilder } from '@/components/poll/poll-builder'
 
-export const metadata: Metadata = { title: 'Create Poll' }
+export const metadata = { title: 'Create Poll' }
 
 export default function CreatePollPage() {
   return (
-    <div>
+    <div className="flex flex-col gap-8 max-w-3xl">
       <PageHeader
-        title="Create Poll"
-        description="Build your poll and share it with the world"
+        title="Create a Poll"
+        description="Build your poll, set questions and options, then share the link."
       />
-      {/* PollBuilder component — implemented in Step 2 */}
-      <div className="glass-card rounded-2xl p-8 text-center text-white/50 text-sm">
-        Poll builder coming in Step 2
-      </div>
+      <PollBuilder />
     </div>
   )
 }
