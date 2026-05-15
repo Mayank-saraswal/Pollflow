@@ -6,7 +6,7 @@ import axios from 'axios'
 import { toast } from 'sonner'
 import {
   ArrowLeft, ArrowRight, Plus, Trash2, Check, GripVertical,
-  Clock, Zap, Trophy, Loader2, Image as ImageIcon, CheckCircle2
+  Clock, Zap, Trophy, Loader2, Image as ImageIcon, CheckCircle2, Sparkles, X
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { MediaUploader } from '@/components/upload/media-uploader'
@@ -64,6 +64,12 @@ export default function CreateQuizPage() {
   const [questions, setQuestions] = useState<QuizQuestion[]>([createEmptyQuestion(0)])
   const [activeQ, setActiveQ] = useState(0)
 
+  // AI State
+  const [showAIModal, setShowAIModal] = useState(false)
+  const [aiTopic, setAiTopic] = useState('')
+  const [aiAmount, setAiAmount] = useState(5)
+  const [isGenerating, setIsGenerating] = useState(false)
+
   const updateQuestion = useCallback((idx: number, updates: Partial<QuizQuestion>) => {
     setQuestions((prev) => prev.map((q, i) => i === idx ? { ...q, ...updates } : q))
   }, [])
@@ -108,6 +114,48 @@ export default function CreateQuizPage() {
     setQuestions((prev) => prev.map((q, i) =>
       i === qIdx ? { ...q, options: q.options.filter((_, oi) => oi !== oIdx).map((o, oi) => ({ ...o, order: oi })) } : q
     ))
+  }
+
+  const generateWithAI = async () => {
+    if (!aiTopic.trim()) {
+      toast.error('Please enter a topic')
+      return
+    }
+    setIsGenerating(true)
+    try {
+      const res = await axios.post('/api/quiz/generate', { topic: aiTopic, amount: aiAmount })
+      const generated = res.data.data
+      
+      const newQuestions: QuizQuestion[] = generated.map((g: any, i: number) => ({
+        text: g.text,
+        imageUrl: null,
+        type: g.type,
+        timeLimit: 30,
+        points: 1000,
+        order: questions.length + i,
+        options: g.options.map((o: any, oi: number) => ({
+          text: o.text,
+          imageUrl: null,
+          isCorrect: o.isCorrect,
+          order: oi,
+        }))
+      }))
+
+      setQuestions(prev => {
+        if (prev.length === 1 && !prev[0].text.trim()) {
+          return newQuestions
+        }
+        return [...prev, ...newQuestions]
+      })
+      
+      toast.success(`Generated ${generated.length} questions!`)
+      setShowAIModal(false)
+      setActiveQ(questions.length > 1 || questions[0].text.trim() ? questions.length : 0)
+    } catch (err: any) {
+      toast.error(err.response?.data?.error || 'Failed to generate questions')
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   const validateStep1 = () => {
@@ -307,6 +355,15 @@ export default function CreateQuizPage() {
             >
               <Plus className="w-4 h-4" />
               Add Question
+            </button>
+            <button
+              onClick={() => setShowAIModal(true)}
+              className="w-full px-3 py-2.5 rounded-xl text-sm font-body
+                        text-blue-400 hover:text-blue-300 hover:bg-blue-400/[0.08]
+                        flex items-center gap-2 transition-all mt-1"
+            >
+              <Sparkles className="w-4 h-4" />
+              AI Generate
             </button>
           </div>
 
@@ -639,6 +696,73 @@ export default function CreateQuizPage() {
               )}
               Create Quiz
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* AI Generate Modal */}
+      {showAIModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-[#111113] border border-white/[0.08] rounded-2xl w-full max-w-md overflow-hidden flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between p-4 border-b border-white/[0.06]">
+              <h2 className="font-display font-semibold text-white flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-blue-400" />
+                Auto-Generate with AI
+              </h2>
+              <button 
+                onClick={() => setShowAIModal(false)}
+                className="p-2 rounded-lg hover:bg-white/[0.06] text-white/50 transition-colors"
+                disabled={isGenerating}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="p-6 space-y-5">
+              <div>
+                <label className="block text-white/60 text-sm font-body mb-2">Topic or Description</label>
+                <textarea
+                  value={aiTopic}
+                  onChange={(e) => setAiTopic(e.target.value)}
+                  placeholder="e.g. History of Rome for 8th graders..."
+                  className="input-base min-h-[80px] resize-none"
+                  maxLength={300}
+                  disabled={isGenerating}
+                />
+              </div>
+              <div>
+                <label className="flex items-center justify-between text-white/60 text-sm font-body mb-2">
+                  <span>Number of Questions</span>
+                  <span className="text-white">{aiAmount}</span>
+                </label>
+                <input 
+                  type="range" 
+                  min="1" 
+                  max="20" 
+                  value={aiAmount}
+                  onChange={(e) => setAiAmount(parseInt(e.target.value))}
+                  className="w-full accent-blue-500"
+                  disabled={isGenerating}
+                />
+                <p className="text-white/30 text-xs mt-2">Maximum of 20 questions per generation. Rate limit: 5 generations per day.</p>
+              </div>
+              <button
+                onClick={generateWithAI}
+                disabled={isGenerating || !aiTopic.trim()}
+                className="w-full btn-primary bg-blue-500 hover:bg-blue-600 border-blue-500"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4" />
+                    Generate Questions
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}

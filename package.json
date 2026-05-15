@@ -11,6 +11,7 @@
     "dev:all": "concurrently \"npm run dev\" \"npm run socket\""
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.63",
     "@auth/prisma-adapter": "^2.11.2",
     "@azure/storage-blob": "^12.31.0",
     "@base-ui/react": "^1.4.1",
@@ -25,6 +26,7 @@
     "@types/ioredis": "^4.28.10",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
+    "ai": "^6.0.182",
     "axios": "^1.16.1",
     "bcryptjs": "^3.0.3",
     "canvas-confetti": "^1.9.4",
@@ -73,6 +75,7 @@
     "prettier-plugin-tailwindcss": "^0.8.0",
     "prisma": "^7.8.0",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
