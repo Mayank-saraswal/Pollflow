@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
+
+export const maxDuration = 60 // Allow up to 60 seconds for AI generation
+
 import { generateObject } from 'ai'
 import { openai } from '@ai-sdk/openai'
 import { z } from 'zod'
