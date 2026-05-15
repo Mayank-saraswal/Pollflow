@@ -55,10 +55,7 @@ export function Navbar() {
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between max-w-7xl">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <Zap className="w-5 h-5 text-white" />
-          <span className="font-display font-semibold text-white text-xl">
-            Poll<span className="text-white/40">Flow</span>
-          </span>
+          <img src="/logo.gif" alt="PollFlow Logo" className="h-8 w-auto" />
         </Link>
 
         {/* Desktop Nav Links */}

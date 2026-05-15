@@ -459,19 +459,31 @@ export default function CreateQuizPage() {
                     )}
                   >
                     <GripVertical className="w-4 h-4 text-white/15 shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <input
-                        type="text"
-                        value={opt.text}
-                        onChange={(e) => updateOption(activeQ, oIdx, { text: e.target.value })}
-                        placeholder={`Option ${oIdx + 1}`}
-                        className="w-full bg-transparent text-white/90 text-sm font-body
-                                  outline-none placeholder:text-white/20"
-                        maxLength={200}
-                      />
+                    <div className="flex-1 min-w-0 space-y-2">
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={opt.text}
+                          onChange={(e) => updateOption(activeQ, oIdx, { text: e.target.value })}
+                          placeholder={`Option ${oIdx + 1}`}
+                          className="input-base flex-1 h-10"
+                          maxLength={200}
+                        />
+                        {!opt.imageUrl && (
+                          <button
+                            onClick={() => {
+                              // We can just use a hidden state or something, or we can just let MediaUploader be small
+                              // Actually, let's keep MediaUploader but make it very compact or hidden
+                            }}
+                            className="hidden"
+                          >
+                          </button>
+                        )}
+                      </div>
+                      
                       {/* Option media upload */}
                       {opt.imageUrl ? (
-                        <div className="mt-2 relative inline-block">
+                        <div className="relative inline-block">
                           {opt.imageUrl.includes('.mp4') || opt.imageUrl.includes('.webm') ? (
                             <video src={opt.imageUrl} className="h-16 rounded-lg" controls />
                           ) : (
@@ -479,21 +491,27 @@ export default function CreateQuizPage() {
                           )}
                           <button
                             onClick={() => updateOption(activeQ, oIdx, { imageUrl: null })}
-                            className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-black/80 flex items-center justify-center"
+                            className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-black/80 flex items-center justify-center hover:bg-black transition-colors"
                           >
                             <span className="text-white text-xs">×</span>
                           </button>
                         </div>
                       ) : (
-                        <div className="mt-1">
-                          <MediaUploader
-                            value={opt.imageUrl}
-                            onChange={(url) => updateOption(activeQ, oIdx, { imageUrl: url })}
-                            accept="image"
-                            label="Add image"
-                            className="!h-10 !text-xs"
-                          />
-                        </div>
+                        <details className="group">
+                          <summary className="text-xs text-white/30 hover:text-white/50 cursor-pointer list-none flex items-center gap-1.5 transition-colors">
+                            <ImageIcon className="w-3.5 h-3.5" />
+                            Add image (optional)
+                          </summary>
+                          <div className="mt-2">
+                            <MediaUploader
+                              value={opt.imageUrl}
+                              onChange={(url) => updateOption(activeQ, oIdx, { imageUrl: url })}
+                              accept="image"
+                              label="Upload image"
+                              className="!h-10 !text-xs"
+                            />
+                          </div>
+                        </details>
                       )}
                     </div>
                     <button

@@ -101,13 +101,7 @@ export default function JoinQuizPage() {
     <div className="min-h-screen bg-[#09090B] flex flex-col items-center justify-center p-6">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2.5 mb-12 group">
-        <div className="p-1.5 rounded-lg bg-white/[0.06] border border-white/[0.08]
-                        group-hover:bg-white/[0.10] transition-colors">
-          <Zap className="w-4 h-4 text-white" />
-        </div>
-        <span className="font-display font-semibold text-white text-lg">
-          Poll<span className="text-white/40">Flow</span>
-        </span>
+        <img src="/logo.gif" alt="PollFlow Logo" className="h-10 w-auto" />
       </Link>
 
       {/* Heading */}
