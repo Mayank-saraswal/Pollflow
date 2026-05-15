@@ -12,7 +12,7 @@ export function usePolls(page = 1) {
     queryKey: ['polls', page],
     queryFn:  async () => {
       const { data } = await api.get(`/polls?page=${page}&limit=10`)
-      return data.data as { polls: Poll[]; pagination: unknown }
+      return data.data as { polls: Poll[]; pagination: { pages: number } }
     },
   })
 }

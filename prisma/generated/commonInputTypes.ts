@@ -236,6 +236,74 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
+export type EnumQuizStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuizStatus | Prisma.EnumQuizStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.QuizStatus[] | Prisma.ListEnumQuizStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuizStatus[] | Prisma.ListEnumQuizStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuizStatusFilter<$PrismaModel> | $Enums.QuizStatus
+}
+
+export type EnumQuizAccessFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuizAccess | Prisma.EnumQuizAccessFieldRefInput<$PrismaModel>
+  in?: $Enums.QuizAccess[] | Prisma.ListEnumQuizAccessFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuizAccess[] | Prisma.ListEnumQuizAccessFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuizAccessFilter<$PrismaModel> | $Enums.QuizAccess
+}
+
+export type EnumQuizStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuizStatus | Prisma.EnumQuizStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.QuizStatus[] | Prisma.ListEnumQuizStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuizStatus[] | Prisma.ListEnumQuizStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuizStatusWithAggregatesFilter<$PrismaModel> | $Enums.QuizStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuizStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuizStatusFilter<$PrismaModel>
+}
+
+export type EnumQuizAccessWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuizAccess | Prisma.EnumQuizAccessFieldRefInput<$PrismaModel>
+  in?: $Enums.QuizAccess[] | Prisma.ListEnumQuizAccessFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuizAccess[] | Prisma.ListEnumQuizAccessFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuizAccessWithAggregatesFilter<$PrismaModel> | $Enums.QuizAccess
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuizAccessFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuizAccessFilter<$PrismaModel>
+}
+
+export type EnumQuestionTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionType[] | Prisma.ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuestionType[] | Prisma.ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel> | $Enums.QuestionType
+}
+
+export type EnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionType[] | Prisma.ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuestionType[] | Prisma.ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuestionType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
+}
+
+export type EnumSessionPhaseFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionPhase | Prisma.EnumSessionPhaseFieldRefInput<$PrismaModel>
+  in?: $Enums.SessionPhase[] | Prisma.ListEnumSessionPhaseFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SessionPhase[] | Prisma.ListEnumSessionPhaseFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSessionPhaseFilter<$PrismaModel> | $Enums.SessionPhase
+}
+
+export type EnumSessionPhaseWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionPhase | Prisma.EnumSessionPhaseFieldRefInput<$PrismaModel>
+  in?: $Enums.SessionPhase[] | Prisma.ListEnumSessionPhaseFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SessionPhase[] | Prisma.ListEnumSessionPhaseFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSessionPhaseWithAggregatesFilter<$PrismaModel> | $Enums.SessionPhase
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSessionPhaseFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSessionPhaseFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -469,6 +537,74 @@ export type NestedFloatFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
+}
+
+export type NestedEnumQuizStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuizStatus | Prisma.EnumQuizStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.QuizStatus[] | Prisma.ListEnumQuizStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuizStatus[] | Prisma.ListEnumQuizStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuizStatusFilter<$PrismaModel> | $Enums.QuizStatus
+}
+
+export type NestedEnumQuizAccessFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuizAccess | Prisma.EnumQuizAccessFieldRefInput<$PrismaModel>
+  in?: $Enums.QuizAccess[] | Prisma.ListEnumQuizAccessFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuizAccess[] | Prisma.ListEnumQuizAccessFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuizAccessFilter<$PrismaModel> | $Enums.QuizAccess
+}
+
+export type NestedEnumQuizStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuizStatus | Prisma.EnumQuizStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.QuizStatus[] | Prisma.ListEnumQuizStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuizStatus[] | Prisma.ListEnumQuizStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuizStatusWithAggregatesFilter<$PrismaModel> | $Enums.QuizStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuizStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuizStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumQuizAccessWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuizAccess | Prisma.EnumQuizAccessFieldRefInput<$PrismaModel>
+  in?: $Enums.QuizAccess[] | Prisma.ListEnumQuizAccessFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuizAccess[] | Prisma.ListEnumQuizAccessFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuizAccessWithAggregatesFilter<$PrismaModel> | $Enums.QuizAccess
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuizAccessFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuizAccessFilter<$PrismaModel>
+}
+
+export type NestedEnumQuestionTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionType[] | Prisma.ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuestionType[] | Prisma.ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel> | $Enums.QuestionType
+}
+
+export type NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionType[] | Prisma.ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuestionType[] | Prisma.ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuestionType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumSessionPhaseFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionPhase | Prisma.EnumSessionPhaseFieldRefInput<$PrismaModel>
+  in?: $Enums.SessionPhase[] | Prisma.ListEnumSessionPhaseFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SessionPhase[] | Prisma.ListEnumSessionPhaseFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSessionPhaseFilter<$PrismaModel> | $Enums.SessionPhase
+}
+
+export type NestedEnumSessionPhaseWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionPhase | Prisma.EnumSessionPhaseFieldRefInput<$PrismaModel>
+  in?: $Enums.SessionPhase[] | Prisma.ListEnumSessionPhaseFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SessionPhase[] | Prisma.ListEnumSessionPhaseFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSessionPhaseWithAggregatesFilter<$PrismaModel> | $Enums.SessionPhase
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSessionPhaseFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSessionPhaseFilter<$PrismaModel>
 }
 
 

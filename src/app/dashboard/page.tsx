@@ -14,17 +14,26 @@ export default async function DashboardPage() {
   const session = await auth()
   if (!session?.user?.id) return null
 
-  const [polls, totalResponses] = await Promise.all([
-    prisma.poll.findMany({
-      where:   { creatorId: session.user.id },
-      include: { _count: { select: { responses: true } }, questions: { select: { id: true } } },
-      orderBy: { createdAt: 'desc' },
-      take: 6,
-    }),
-    prisma.response.count({
-      where: { poll: { creatorId: session.user.id } },
-    }),
-  ])
+  let polls: any[] = []
+  let totalResponses = 0
+
+  try {
+    const results = await Promise.all([
+      prisma.poll.findMany({
+        where:   { creatorId: session.user.id },
+        include: { _count: { select: { responses: true } }, questions: { select: { id: true } } },
+        orderBy: { createdAt: 'desc' },
+        take: 6,
+      }),
+      prisma.response.count({
+        where: { poll: { creatorId: session.user.id } },
+      }),
+    ])
+    polls = results[0]
+    totalResponses = results[1]
+  } catch {
+    // Graceful degradation — show empty dashboard rather than crashing
+  }
 
   const activePolls    = polls.filter((p) => p.status === 'ACTIVE').length
   const publishedPolls = polls.filter((p) => p.status === 'PUBLISHED').length

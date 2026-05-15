@@ -57,3 +57,33 @@ export type Response = Prisma.ResponseModel
  * 
  */
 export type Answer = Prisma.AnswerModel
+/**
+ * Model Quiz
+ * 
+ */
+export type Quiz = Prisma.QuizModel
+/**
+ * Model QuizQuestion
+ * 
+ */
+export type QuizQuestion = Prisma.QuizQuestionModel
+/**
+ * Model QuizOption
+ * 
+ */
+export type QuizOption = Prisma.QuizOptionModel
+/**
+ * Model QuizSession
+ * 
+ */
+export type QuizSession = Prisma.QuizSessionModel
+/**
+ * Model SessionParticipant
+ * 
+ */
+export type SessionParticipant = Prisma.SessionParticipantModel
+/**
+ * Model SessionAnswer
+ * 
+ */
+export type SessionAnswer = Prisma.SessionAnswerModel

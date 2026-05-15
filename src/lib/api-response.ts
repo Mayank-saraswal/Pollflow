@@ -38,9 +38,12 @@ export function handleZodError(err: ZodError): NextResponse<ApiError> {
 }
 
 export function handleServerError(err: unknown): NextResponse<ApiError> {
+  // Log full error server-side for debugging — this stays in server logs only
   console.error('[API Error]', err)
-  const message = err instanceof Error ? err.message : 'Internal server error'
-  return apiError(message, 500)
+
+  // NEVER forward raw error messages to the client.
+  // Prisma errors contain queries, schema details, and file paths.
+  return apiError('Internal server error', 500)
 }
 
 // Helper to get user IP from request headers

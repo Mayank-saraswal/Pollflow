@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 
 interface ErrorBoundaryState {
   hasError: boolean
-  error?: Error
 }
 
 interface ErrorBoundaryProps {
@@ -20,16 +19,19 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, error }
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true }
   }
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
-    console.error('ErrorBoundary caught:', error, info)
+    // Only log in development — never expose stack traces in production browser console
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ErrorBoundary caught:', error, info)
+    }
   }
 
   handleReset = () => {
-    this.setState({ hasError: false, error: undefined })
+    this.setState({ hasError: false })
   }
 
   render() {
@@ -44,7 +46,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-1">Something went wrong</h3>
             <p className="text-sm text-white/50 max-w-sm">
-              {this.state.error?.message ?? 'An unexpected error occurred'}
+              An unexpected error occurred. Please try again.
             </p>
           </div>
           <Button

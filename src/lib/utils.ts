@@ -10,11 +10,12 @@ export function formatDate(date: string | Date) {
   return format(new Date(date), 'MMM d, yyyy')
 }
 
-export function formatRelative(date: string | Date) {
+export function formatRelative(date: string | Date | null | undefined) {
+  if (!date) return ''
   return formatDistanceToNow(new Date(date), { addSuffix: true })
 }
 
-export function isPollExpired(expiresAt?: string | null): boolean {
+export function isPollExpired(expiresAt?: string | Date | null): boolean {
   if (!expiresAt) return false
   return !isAfter(new Date(expiresAt), new Date())
 }

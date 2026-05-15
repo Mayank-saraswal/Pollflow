@@ -210,6 +210,8 @@ export type UserWhereInput = {
   sessions?: Prisma.SessionListRelationFilter
   polls?: Prisma.PollListRelationFilter
   responses?: Prisma.ResponseListRelationFilter
+  quizzes?: Prisma.QuizListRelationFilter
+  quizParticipations?: Prisma.SessionParticipantListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -225,6 +227,8 @@ export type UserOrderByWithRelationInput = {
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   polls?: Prisma.PollOrderByRelationAggregateInput
   responses?: Prisma.ResponseOrderByRelationAggregateInput
+  quizzes?: Prisma.QuizOrderByRelationAggregateInput
+  quizParticipations?: Prisma.SessionParticipantOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -243,6 +247,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   sessions?: Prisma.SessionListRelationFilter
   polls?: Prisma.PollListRelationFilter
   responses?: Prisma.ResponseListRelationFilter
+  quizzes?: Prisma.QuizListRelationFilter
+  quizParticipations?: Prisma.SessionParticipantListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -286,6 +292,8 @@ export type UserCreateInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   polls?: Prisma.PollCreateNestedManyWithoutCreatorInput
   responses?: Prisma.ResponseCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -301,6 +309,8 @@ export type UserUncheckedCreateInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   polls?: Prisma.PollUncheckedCreateNestedManyWithoutCreatorInput
   responses?: Prisma.ResponseUncheckedCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizUncheckedCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -316,6 +326,8 @@ export type UserUpdateInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   polls?: Prisma.PollUpdateManyWithoutCreatorNestedInput
   responses?: Prisma.ResponseUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -331,6 +343,8 @@ export type UserUncheckedUpdateInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   polls?: Prisma.PollUncheckedUpdateManyWithoutCreatorNestedInput
   responses?: Prisma.ResponseUncheckedUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUncheckedUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -483,6 +497,36 @@ export type UserUpdateOneWithoutResponsesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutResponsesInput, Prisma.UserUpdateWithoutResponsesInput>, Prisma.UserUncheckedUpdateWithoutResponsesInput>
 }
 
+export type UserCreateNestedOneWithoutQuizzesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutQuizzesInput, Prisma.UserUncheckedCreateWithoutQuizzesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutQuizzesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutQuizzesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutQuizzesInput, Prisma.UserUncheckedCreateWithoutQuizzesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutQuizzesInput
+  upsert?: Prisma.UserUpsertWithoutQuizzesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutQuizzesInput, Prisma.UserUpdateWithoutQuizzesInput>, Prisma.UserUncheckedUpdateWithoutQuizzesInput>
+}
+
+export type UserCreateNestedOneWithoutQuizParticipationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutQuizParticipationsInput, Prisma.UserUncheckedCreateWithoutQuizParticipationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutQuizParticipationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutQuizParticipationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutQuizParticipationsInput, Prisma.UserUncheckedCreateWithoutQuizParticipationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutQuizParticipationsInput
+  upsert?: Prisma.UserUpsertWithoutQuizParticipationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutQuizParticipationsInput, Prisma.UserUpdateWithoutQuizParticipationsInput>, Prisma.UserUncheckedUpdateWithoutQuizParticipationsInput>
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   email: string
@@ -495,6 +539,8 @@ export type UserCreateWithoutAccountsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   polls?: Prisma.PollCreateNestedManyWithoutCreatorInput
   responses?: Prisma.ResponseCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -509,6 +555,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   polls?: Prisma.PollUncheckedCreateNestedManyWithoutCreatorInput
   responses?: Prisma.ResponseUncheckedCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizUncheckedCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -539,6 +587,8 @@ export type UserUpdateWithoutAccountsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   polls?: Prisma.PollUpdateManyWithoutCreatorNestedInput
   responses?: Prisma.ResponseUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -553,6 +603,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   polls?: Prisma.PollUncheckedUpdateManyWithoutCreatorNestedInput
   responses?: Prisma.ResponseUncheckedUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUncheckedUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -567,6 +619,8 @@ export type UserCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   polls?: Prisma.PollCreateNestedManyWithoutCreatorInput
   responses?: Prisma.ResponseCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -581,6 +635,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   polls?: Prisma.PollUncheckedCreateNestedManyWithoutCreatorInput
   responses?: Prisma.ResponseUncheckedCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizUncheckedCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -611,6 +667,8 @@ export type UserUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   polls?: Prisma.PollUpdateManyWithoutCreatorNestedInput
   responses?: Prisma.ResponseUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -625,6 +683,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   polls?: Prisma.PollUncheckedUpdateManyWithoutCreatorNestedInput
   responses?: Prisma.ResponseUncheckedUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUncheckedUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPollsInput = {
@@ -639,6 +699,8 @@ export type UserCreateWithoutPollsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   responses?: Prisma.ResponseCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPollsInput = {
@@ -653,6 +715,8 @@ export type UserUncheckedCreateWithoutPollsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   responses?: Prisma.ResponseUncheckedCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizUncheckedCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPollsInput = {
@@ -683,6 +747,8 @@ export type UserUpdateWithoutPollsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   responses?: Prisma.ResponseUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPollsInput = {
@@ -697,6 +763,8 @@ export type UserUncheckedUpdateWithoutPollsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   responses?: Prisma.ResponseUncheckedUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUncheckedUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutResponsesInput = {
@@ -711,6 +779,8 @@ export type UserCreateWithoutResponsesInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   polls?: Prisma.PollCreateNestedManyWithoutCreatorInput
+  quizzes?: Prisma.QuizCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutResponsesInput = {
@@ -725,6 +795,8 @@ export type UserUncheckedCreateWithoutResponsesInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   polls?: Prisma.PollUncheckedCreateNestedManyWithoutCreatorInput
+  quizzes?: Prisma.QuizUncheckedCreateNestedManyWithoutHostInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResponsesInput = {
@@ -755,6 +827,8 @@ export type UserUpdateWithoutResponsesInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   polls?: Prisma.PollUpdateManyWithoutCreatorNestedInput
+  quizzes?: Prisma.QuizUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResponsesInput = {
@@ -769,6 +843,168 @@ export type UserUncheckedUpdateWithoutResponsesInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   polls?: Prisma.PollUncheckedUpdateManyWithoutCreatorNestedInput
+  quizzes?: Prisma.QuizUncheckedUpdateManyWithoutHostNestedInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutQuizzesInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  name?: string | null
+  image?: string | null
+  password?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  polls?: Prisma.PollCreateNestedManyWithoutCreatorInput
+  responses?: Prisma.ResponseCreateNestedManyWithoutRespondentInput
+  quizParticipations?: Prisma.SessionParticipantCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutQuizzesInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  name?: string | null
+  image?: string | null
+  password?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  polls?: Prisma.PollUncheckedCreateNestedManyWithoutCreatorInput
+  responses?: Prisma.ResponseUncheckedCreateNestedManyWithoutRespondentInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutQuizzesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutQuizzesInput, Prisma.UserUncheckedCreateWithoutQuizzesInput>
+}
+
+export type UserUpsertWithoutQuizzesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutQuizzesInput, Prisma.UserUncheckedUpdateWithoutQuizzesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutQuizzesInput, Prisma.UserUncheckedCreateWithoutQuizzesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutQuizzesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutQuizzesInput, Prisma.UserUncheckedUpdateWithoutQuizzesInput>
+}
+
+export type UserUpdateWithoutQuizzesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  polls?: Prisma.PollUpdateManyWithoutCreatorNestedInput
+  responses?: Prisma.ResponseUpdateManyWithoutRespondentNestedInput
+  quizParticipations?: Prisma.SessionParticipantUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutQuizzesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  polls?: Prisma.PollUncheckedUpdateManyWithoutCreatorNestedInput
+  responses?: Prisma.ResponseUncheckedUpdateManyWithoutRespondentNestedInput
+  quizParticipations?: Prisma.SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutQuizParticipationsInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  name?: string | null
+  image?: string | null
+  password?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  polls?: Prisma.PollCreateNestedManyWithoutCreatorInput
+  responses?: Prisma.ResponseCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizCreateNestedManyWithoutHostInput
+}
+
+export type UserUncheckedCreateWithoutQuizParticipationsInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  name?: string | null
+  image?: string | null
+  password?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  polls?: Prisma.PollUncheckedCreateNestedManyWithoutCreatorInput
+  responses?: Prisma.ResponseUncheckedCreateNestedManyWithoutRespondentInput
+  quizzes?: Prisma.QuizUncheckedCreateNestedManyWithoutHostInput
+}
+
+export type UserCreateOrConnectWithoutQuizParticipationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutQuizParticipationsInput, Prisma.UserUncheckedCreateWithoutQuizParticipationsInput>
+}
+
+export type UserUpsertWithoutQuizParticipationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutQuizParticipationsInput, Prisma.UserUncheckedUpdateWithoutQuizParticipationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutQuizParticipationsInput, Prisma.UserUncheckedCreateWithoutQuizParticipationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutQuizParticipationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutQuizParticipationsInput, Prisma.UserUncheckedUpdateWithoutQuizParticipationsInput>
+}
+
+export type UserUpdateWithoutQuizParticipationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  polls?: Prisma.PollUpdateManyWithoutCreatorNestedInput
+  responses?: Prisma.ResponseUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUpdateManyWithoutHostNestedInput
+}
+
+export type UserUncheckedUpdateWithoutQuizParticipationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  polls?: Prisma.PollUncheckedUpdateManyWithoutCreatorNestedInput
+  responses?: Prisma.ResponseUncheckedUpdateManyWithoutRespondentNestedInput
+  quizzes?: Prisma.QuizUncheckedUpdateManyWithoutHostNestedInput
 }
 
 
@@ -781,6 +1017,8 @@ export type UserCountOutputType = {
   sessions: number
   polls: number
   responses: number
+  quizzes: number
+  quizParticipations: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -788,6 +1026,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   polls?: boolean | UserCountOutputTypeCountPollsArgs
   responses?: boolean | UserCountOutputTypeCountResponsesArgs
+  quizzes?: boolean | UserCountOutputTypeCountQuizzesArgs
+  quizParticipations?: boolean | UserCountOutputTypeCountQuizParticipationsArgs
 }
 
 /**
@@ -828,6 +1068,20 @@ export type UserCountOutputTypeCountResponsesArgs<ExtArgs extends runtime.Types.
   where?: Prisma.ResponseWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountQuizzesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QuizWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountQuizParticipationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionParticipantWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -842,6 +1096,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   polls?: boolean | Prisma.User$pollsArgs<ExtArgs>
   responses?: boolean | Prisma.User$responsesArgs<ExtArgs>
+  quizzes?: boolean | Prisma.User$quizzesArgs<ExtArgs>
+  quizParticipations?: boolean | Prisma.User$quizParticipationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -884,6 +1140,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   polls?: boolean | Prisma.User$pollsArgs<ExtArgs>
   responses?: boolean | Prisma.User$responsesArgs<ExtArgs>
+  quizzes?: boolean | Prisma.User$quizzesArgs<ExtArgs>
+  quizParticipations?: boolean | Prisma.User$quizParticipationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -896,6 +1154,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     polls: Prisma.$PollPayload<ExtArgs>[]
     responses: Prisma.$ResponsePayload<ExtArgs>[]
+    quizzes: Prisma.$QuizPayload<ExtArgs>[]
+    quizParticipations: Prisma.$SessionParticipantPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1304,6 +1564,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   polls<T extends Prisma.User$pollsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pollsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PollPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   responses<T extends Prisma.User$responsesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  quizzes<T extends Prisma.User$quizzesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$quizzesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuizPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  quizParticipations<T extends Prisma.User$quizParticipationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$quizParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1827,6 +2089,54 @@ export type User$responsesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.ResponseScalarFieldEnum | Prisma.ResponseScalarFieldEnum[]
+}
+
+/**
+ * User.quizzes
+ */
+export type User$quizzesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Quiz
+   */
+  select?: Prisma.QuizSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Quiz
+   */
+  omit?: Prisma.QuizOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuizInclude<ExtArgs> | null
+  where?: Prisma.QuizWhereInput
+  orderBy?: Prisma.QuizOrderByWithRelationInput | Prisma.QuizOrderByWithRelationInput[]
+  cursor?: Prisma.QuizWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QuizScalarFieldEnum | Prisma.QuizScalarFieldEnum[]
+}
+
+/**
+ * User.quizParticipations
+ */
+export type User$quizParticipationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SessionParticipant
+   */
+  select?: Prisma.SessionParticipantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SessionParticipant
+   */
+  omit?: Prisma.SessionParticipantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionParticipantInclude<ExtArgs> | null
+  where?: Prisma.SessionParticipantWhereInput
+  orderBy?: Prisma.SessionParticipantOrderByWithRelationInput | Prisma.SessionParticipantOrderByWithRelationInput[]
+  cursor?: Prisma.SessionParticipantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionParticipantScalarFieldEnum | Prisma.SessionParticipantScalarFieldEnum[]
 }
 
 /**

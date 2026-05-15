@@ -69,14 +69,11 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     for (const answer of parsed.answers) {
       const question = questionMap.get(answer.questionId)
       if (!question) {
-        return apiError(`Invalid question ID: ${answer.questionId}`, 400)
+        return apiError('Invalid question in submission', 400)
       }
       const optionBelongs = question.options.some((o) => o.id === answer.optionId)
       if (!optionBelongs) {
-        return apiError(
-          `Option ${answer.optionId} does not belong to question ${answer.questionId}`,
-          400
-        )
+        return apiError('Invalid option for the selected question', 400)
       }
     }
 

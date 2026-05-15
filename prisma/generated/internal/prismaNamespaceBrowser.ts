@@ -58,7 +58,13 @@ export const ModelName = {
   Question: 'Question',
   Option: 'Option',
   Response: 'Response',
-  Answer: 'Answer'
+  Answer: 'Answer',
+  Quiz: 'Quiz',
+  QuizQuestion: 'QuizQuestion',
+  QuizOption: 'QuizOption',
+  QuizSession: 'QuizSession',
+  SessionParticipant: 'SessionParticipant',
+  SessionAnswer: 'SessionAnswer'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -178,6 +184,92 @@ export const AnswerScalarFieldEnum = {
 } as const
 
 export type AnswerScalarFieldEnum = (typeof AnswerScalarFieldEnum)[keyof typeof AnswerScalarFieldEnum]
+
+
+export const QuizScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  joinCode: 'joinCode',
+  hostId: 'hostId',
+  status: 'status',
+  accessMode: 'accessMode',
+  maxParticipants: 'maxParticipants',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuizScalarFieldEnum = (typeof QuizScalarFieldEnum)[keyof typeof QuizScalarFieldEnum]
+
+
+export const QuizQuestionScalarFieldEnum = {
+  id: 'id',
+  quizId: 'quizId',
+  text: 'text',
+  imageUrl: 'imageUrl',
+  type: 'type',
+  timeLimit: 'timeLimit',
+  points: 'points',
+  order: 'order'
+} as const
+
+export type QuizQuestionScalarFieldEnum = (typeof QuizQuestionScalarFieldEnum)[keyof typeof QuizQuestionScalarFieldEnum]
+
+
+export const QuizOptionScalarFieldEnum = {
+  id: 'id',
+  questionId: 'questionId',
+  text: 'text',
+  imageUrl: 'imageUrl',
+  isCorrect: 'isCorrect',
+  order: 'order'
+} as const
+
+export type QuizOptionScalarFieldEnum = (typeof QuizOptionScalarFieldEnum)[keyof typeof QuizOptionScalarFieldEnum]
+
+
+export const QuizSessionScalarFieldEnum = {
+  id: 'id',
+  quizId: 'quizId',
+  hostId: 'hostId',
+  phase: 'phase',
+  currentQuestion: 'currentQuestion',
+  questionStartedAt: 'questionStartedAt',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type QuizSessionScalarFieldEnum = (typeof QuizSessionScalarFieldEnum)[keyof typeof QuizSessionScalarFieldEnum]
+
+
+export const SessionParticipantScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  userId: 'userId',
+  displayName: 'displayName',
+  avatarUrl: 'avatarUrl',
+  score: 'score',
+  rank: 'rank',
+  joinedAt: 'joinedAt'
+} as const
+
+export type SessionParticipantScalarFieldEnum = (typeof SessionParticipantScalarFieldEnum)[keyof typeof SessionParticipantScalarFieldEnum]
+
+
+export const SessionAnswerScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  participantId: 'participantId',
+  questionId: 'questionId',
+  isCorrect: 'isCorrect',
+  pointsEarned: 'pointsEarned',
+  answerTimeMs: 'answerTimeMs',
+  streak: 'streak',
+  submittedAt: 'submittedAt'
+} as const
+
+export type SessionAnswerScalarFieldEnum = (typeof SessionAnswerScalarFieldEnum)[keyof typeof SessionAnswerScalarFieldEnum]
 
 
 export const SortOrder = {

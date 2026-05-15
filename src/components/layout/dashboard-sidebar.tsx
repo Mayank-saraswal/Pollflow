@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
   Zap, LayoutDashboard, PlusCircle, BarChart3,
-  Settings, LogOut, User, Menu, X
+  Settings, LogOut, User, Menu, X, Trophy
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { label: 'Create Poll', href: '/dashboard/create', icon: PlusCircle,
     highlight: true },
   { label: 'My Polls',   href: '/dashboard/polls',  icon: BarChart3 },
+  { label: 'Quizzes',    href: '/dashboard/quiz',   icon: Trophy },
   { label: 'Settings',  href: '/dashboard/settings', icon: Settings },
 ]
 

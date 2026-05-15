@@ -20,6 +20,8 @@ model User {
   sessions      Session[]
   polls         Poll[]
   responses     Response[]
+  quizzes       Quiz[]
+  quizParticipations SessionParticipant[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -132,4 +134,131 @@ model Answer {
 
   @@index([responseId])
   @@index([questionId, optionId])
+}
+
+// ── Quiz Engine ─────────────────────────────────────────────────────
+
+model Quiz {
+  id              String         @id @default(cuid())
+  title           String
+  description     String?        @db.Text
+  joinCode        String         @unique
+  hostId          String
+  host            User           @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  status          QuizStatus     @default(DRAFT)
+  accessMode      QuizAccess     @default(AUTHENTICATED_ONLY)
+  maxParticipants Int            @default(1000)
+  questions       QuizQuestion[]
+  sessions        QuizSession[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([hostId])
+  @@index([joinCode])
+}
+
+enum QuizStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum QuizAccess {
+  AUTHENTICATED_ONLY
+  ANYONE
+}
+
+model QuizQuestion {
+  id             String          @id @default(cuid())
+  quizId         String
+  quiz           Quiz            @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  text           String
+  imageUrl       String?
+  type           QuestionType    @default(SINGLE)
+  timeLimit      Int             @default(30)
+  points         Int             @default(1000)
+  order          Int
+  options        QuizOption[]
+  sessionAnswers SessionAnswer[]
+
+  @@index([quizId])
+}
+
+enum QuestionType {
+  SINGLE
+  MULTIPLE
+}
+
+model QuizOption {
+  id         String         @id @default(cuid())
+  questionId String
+  question   QuizQuestion   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  text       String
+  imageUrl   String?
+  isCorrect  Boolean        @default(false)
+  order      Int
+  answers    SessionAnswer[]
+
+  @@index([questionId])
+}
+
+model QuizSession {
+  id                String               @id @default(cuid())
+  quizId            String
+  quiz              Quiz                 @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  hostId            String
+  phase             SessionPhase         @default(LOBBY)
+  currentQuestion   Int                  @default(0)
+  questionStartedAt DateTime?
+  startedAt         DateTime?
+  endedAt           DateTime?
+  participants      SessionParticipant[]
+  answers           SessionAnswer[]
+  createdAt         DateTime             @default(now())
+
+  @@index([quizId])
+}
+
+enum SessionPhase {
+  LOBBY
+  QUESTION_ACTIVE
+  QUESTION_ENDED
+  QUIZ_ENDED
+}
+
+model SessionParticipant {
+  id          String          @id @default(cuid())
+  sessionId   String
+  session     QuizSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId      String?
+  user        User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  displayName String
+  avatarUrl   String?
+  score       Int             @default(0)
+  rank        Int?
+  joinedAt    DateTime        @default(now())
+  answers     SessionAnswer[]
+
+  @@unique([sessionId, userId])
+  @@index([sessionId])
+}
+
+model SessionAnswer {
+  id              String             @id @default(cuid())
+  sessionId       String
+  session         QuizSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  participantId   String
+  participant     SessionParticipant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  questionId      String
+  question        QuizQuestion       @relation(fields: [questionId], references: [id])
+  selectedOptions QuizOption[]
+  isCorrect       Boolean
+  pointsEarned    Int
+  answerTimeMs    Int
+  streak          Int                @default(0)
+  submittedAt     DateTime           @default(now())
+
+  @@unique([sessionId, participantId, questionId])
+  @@index([sessionId, questionId])
+  @@index([participantId])
 }

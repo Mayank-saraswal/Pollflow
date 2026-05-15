@@ -20,6 +20,7 @@ const io = new Server(httpServer, {
 // Redis subscriber for Upstash pub/sub
 const subscriber = new Redis(REDIS_URL)
 
+// ── Poll namespace (default) ──────────────────────────────────────
 io.on('connection', (socket) => {
   console.log(`[socket] connected: ${socket.id}`)
 
@@ -39,15 +40,70 @@ io.on('connection', (socket) => {
   })
 })
 
-// Listen to Redis channel and broadcast to room
-subscriber.psubscribe('pollflow:poll:*', (err) => {
+// ── Quiz namespace ─────────────────────────────────────────────────
+const quizNs = io.of('/quiz')
+
+quizNs.on('connection', (socket) => {
+  console.log(`[quiz] connected: ${socket.id}`)
+
+  // Participant or admin joins session room
+  socket.on('quiz:join', ({ sessionId, role }: {
+    sessionId: string
+    role: 'participant' | 'admin'
+  }) => {
+    if (!sessionId) return
+    socket.join(`quiz:${sessionId}`)
+    if (role === 'admin') {
+      socket.join(`quiz:${sessionId}:admin`)
+    }
+    console.log(`[quiz] ${socket.id} joined quiz:${sessionId} as ${role}`)
+  })
+
+  socket.on('quiz:leave', ({ sessionId }: { sessionId: string }) => {
+    socket.leave(`quiz:${sessionId}`)
+    socket.leave(`quiz:${sessionId}:admin`)
+  })
+
+  socket.on('disconnect', () => {
+    console.log(`[quiz] disconnected: ${socket.id}`)
+  })
+})
+
+// ── Redis pub/sub — listen to both poll and quiz channels ──────────
+subscriber.psubscribe('pollflow:poll:*', 'quiz:*:events', (err) => {
   if (err) console.error('[redis] psubscribe error:', err)
-  else     console.log('[redis] subscribed to pollflow:poll:*')
+  else     console.log('[redis] subscribed to pollflow:poll:* and quiz:*:events')
 })
 
 subscriber.on(
   'pmessage',
   (_pattern: string, channel: string, message: string) => {
+    // ── Quiz events ───────────────────────────────────────────────
+    const quizMatch = channel.match(/^quiz:(.+):events$/)
+    if (quizMatch) {
+      const sessionId = quizMatch[1]
+      const event     = JSON.parse(message) as {
+        type:    string
+        room?:   string
+        payload: object
+      }
+
+      let room: string
+      if (event.room === 'admin') {
+        room = `quiz:${sessionId}:admin`
+      } else if (event.room?.startsWith('p:')) {
+        // Personal room for individual participant ACK
+        room = `quiz:${sessionId}:${event.room}`
+      } else {
+        room = `quiz:${sessionId}`
+      }
+
+      quizNs.to(room).emit(event.type, event.payload)
+      console.log(`[quiz] → ${room} : ${event.type}`)
+      return
+    }
+
+    // ── Poll events ───────────────────────────────────────────────
     const pollId  = channel.replace('pollflow:poll:', '')
     const payload = JSON.parse(message) as Record<string, unknown>
 

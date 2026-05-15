@@ -24,3 +24,38 @@ export const VoterMode = {
 } as const
 
 export type VoterMode = (typeof VoterMode)[keyof typeof VoterMode]
+
+
+export const QuizStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type QuizStatus = (typeof QuizStatus)[keyof typeof QuizStatus]
+
+
+export const QuizAccess = {
+  AUTHENTICATED_ONLY: 'AUTHENTICATED_ONLY',
+  ANYONE: 'ANYONE'
+} as const
+
+export type QuizAccess = (typeof QuizAccess)[keyof typeof QuizAccess]
+
+
+export const QuestionType = {
+  SINGLE: 'SINGLE',
+  MULTIPLE: 'MULTIPLE'
+} as const
+
+export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType]
+
+
+export const SessionPhase = {
+  LOBBY: 'LOBBY',
+  QUESTION_ACTIVE: 'QUESTION_ACTIVE',
+  QUESTION_ENDED: 'QUESTION_ENDED',
+  QUIZ_ENDED: 'QUIZ_ENDED'
+} as const
+
+export type SessionPhase = (typeof SessionPhase)[keyof typeof SessionPhase]

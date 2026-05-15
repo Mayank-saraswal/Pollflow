@@ -27,3 +27,23 @@ export const CACHE_TTL = {
   POLL: 300,      // 5 minutes
   ANALYTICS: 30, // 30 seconds
 } as const
+
+export const QUIZ_EVENTS = {
+  // Client → Server (via API, not socket)
+  JOIN:              'quiz:join',
+  LEAVE:             'quiz:leave',
+
+  // Server → All participants
+  LOBBY_UPDATE:      'quiz:lobby_update',
+  QUESTION_START:    'quiz:question_start',
+  QUESTION_END:      'quiz:question_end',
+  LEADERBOARD:       'quiz:leaderboard',
+  QUIZ_END:          'quiz:end',
+
+  // Server → Admin room only
+  ADMIN_ANSWER_TICK: 'quiz:admin_answer_tick',
+  ADMIN_STATS:       'quiz:admin_stats',
+
+  // Server → single participant
+  ANSWER_ACK:        'quiz:answer_ack',
+} as const

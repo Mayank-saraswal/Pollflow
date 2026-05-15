@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url)
     const page  = Math.max(1, parseInt(searchParams.get('page')  ?? '1'))
-    const limit = Math.min(50, parseInt(searchParams.get('limit') ?? '10'))
+    const limit = Math.min(50, parseInt(searchParams.get('limit') ?? '100'))
     const skip  = (page - 1) * limit
 
     const [polls, total] = await Promise.all([
