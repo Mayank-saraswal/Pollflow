@@ -1,12 +1,52 @@
-import { createServer } from 'http'
+import { createServer, IncomingMessage, ServerResponse } from 'http'
 import { Server } from 'socket.io'
-import Redis from 'ioredis'
 
 const PORT       = parseInt(process.env.SOCKET_PORT ?? '3001')
 const CLIENT_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
-const REDIS_URL  = process.env.UPSTASH_REDIS_REST_URL ?? ''
+const INTERNAL_SECRET = process.env.SOCKET_INTERNAL_SECRET ?? 'dev-secret'
 
-const httpServer = createServer()
+const httpServer = createServer((req: IncomingMessage, res: ServerResponse) => {
+  // ── Health check ────────────────────────────────────────────────
+  if (req.method === 'GET' && req.url === '/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify({ ok: true }))
+    return
+  }
+
+  // ── Internal event endpoint (replaces Redis pub/sub) ────────────
+  if (req.method === 'POST' && req.url === '/internal/emit') {
+    // Verify shared secret
+    const authHeader = req.headers['authorization']
+    if (authHeader !== `Bearer ${INTERNAL_SECRET}`) {
+      res.writeHead(401, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: 'Unauthorized' }))
+      return
+    }
+
+    let body = ''
+    req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+    req.on('end', () => {
+      try {
+        const { channel, payload } = JSON.parse(body) as {
+          channel: string
+          payload: string
+        }
+        handleEvent(channel, payload)
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ ok: true }))
+      } catch (err) {
+        console.error('[internal/emit] parse error:', err)
+        res.writeHead(400, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'Invalid JSON' }))
+      }
+    })
+    return
+  }
+
+  // Default 404
+  res.writeHead(404)
+  res.end()
+})
 
 const io = new Server(httpServer, {
   cors: {
@@ -16,9 +56,6 @@ const io = new Server(httpServer, {
   },
   transports: ['websocket', 'polling'],
 })
-
-// Redis subscriber for Upstash pub/sub
-const subscriber = new Redis(REDIS_URL)
 
 // ── Poll namespace (default) ──────────────────────────────────────
 io.on('connection', (socket) => {
@@ -69,55 +106,47 @@ quizNs.on('connection', (socket) => {
   })
 })
 
-// ── Redis pub/sub — listen to both poll and quiz channels ──────────
-subscriber.psubscribe('pollflow:poll:*', 'quiz:*:events', (err) => {
-  if (err) console.error('[redis] psubscribe error:', err)
-  else     console.log('[redis] subscribed to pollflow:poll:* and quiz:*:events')
-})
-
-subscriber.on(
-  'pmessage',
-  (_pattern: string, channel: string, message: string) => {
-    // ── Quiz events ───────────────────────────────────────────────
-    const quizMatch = channel.match(/^quiz:(.+):events$/)
-    if (quizMatch) {
-      const sessionId = quizMatch[1]
-      const event     = JSON.parse(message) as {
-        type:    string
-        room?:   string
-        payload: object
-      }
-
-      let room: string
-      if (event.room === 'admin') {
-        room = `quiz:${sessionId}:admin`
-      } else if (event.room?.startsWith('p:')) {
-        // Personal room for individual participant ACK
-        room = `quiz:${sessionId}:${event.room}`
-      } else {
-        room = `quiz:${sessionId}`
-      }
-
-      quizNs.to(room).emit(event.type, event.payload)
-      console.log(`[quiz] → ${room} : ${event.type}`)
-      return
+// ── Event handler (replaces Redis pmessage listener) ──────────────
+function handleEvent(channel: string, message: string) {
+  // ── Quiz events ───────────────────────────────────────────────
+  const quizMatch = channel.match(/^quiz:(.+):events$/)
+  if (quizMatch) {
+    const sessionId = quizMatch[1]
+    const event     = JSON.parse(message) as {
+      type:    string
+      room?:   string
+      payload: object
     }
 
-    // ── Poll events ───────────────────────────────────────────────
-    const pollId  = channel.replace('pollflow:poll:', '')
-    const payload = JSON.parse(message) as Record<string, unknown>
+    let room: string
+    if (event.room === 'admin') {
+      room = `quiz:${sessionId}:admin`
+    } else if (event.room?.startsWith('p:')) {
+      // Personal room for individual participant ACK
+      room = `quiz:${sessionId}:${event.room}`
+    } else {
+      room = `quiz:${sessionId}`
+    }
 
-    io.to(`poll:${pollId}`).emit(
-      (payload.event as string) ?? 'response:new',
-      payload
-    )
-
-    console.log(
-      `[socket] broadcast to poll:${pollId} →`,
-      payload.event ?? 'response:new'
-    )
+    quizNs.to(room).emit(event.type, event.payload)
+    console.log(`[quiz] → ${room} : ${event.type}`)
+    return
   }
-)
+
+  // ── Poll events ───────────────────────────────────────────────
+  const pollId  = channel.replace('pollflow:poll:', '')
+  const payload = JSON.parse(message) as Record<string, unknown>
+
+  io.to(`poll:${pollId}`).emit(
+    (payload.event as string) ?? 'response:new',
+    payload
+  )
+
+  console.log(
+    `[socket] broadcast to poll:${pollId} →`,
+    payload.event ?? 'response:new'
+  )
+}
 
 httpServer.listen(PORT, () => {
   console.log(`[socket-server] running on port ${PORT}`)

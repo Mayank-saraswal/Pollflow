@@ -67,19 +67,37 @@ export async function cacheDel(key: string): Promise<void> {
   }
 }
 
+// ── Socket server bridge (replaces Redis pub/sub) ────────────────
+const SOCKET_SERVER_URL  = process.env.NEXT_PUBLIC_SOCKET_URL ?? 'http://localhost:3001'
+const SOCKET_INTERNAL_SECRET = process.env.SOCKET_INTERNAL_SECRET ?? 'dev-secret'
+
+async function emitToSocketServer(
+  channel: string,
+  payload: string
+): Promise<void> {
+  try {
+    await fetch(`${SOCKET_SERVER_URL}/internal/emit`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SOCKET_INTERNAL_SECRET}`,
+      },
+      body: JSON.stringify({ channel, payload }),
+    })
+  } catch {
+    // Non-fatal — socket server may be offline
+  }
+}
+
 // Pub/Sub publisher for real-time updates
 export async function publishPollUpdate(
   pollId: string,
   payload: object
 ): Promise<void> {
-  try {
-    await redis.publish(
-      `pollflow:poll:${pollId}`,
-      JSON.stringify(payload)
-    )
-  } catch {
-    // Non-fatal
-  }
+  await emitToSocketServer(
+    `pollflow:poll:${pollId}`,
+    JSON.stringify(payload)
+  )
 }
 
 // ── Quiz session keys ─────────────────────────────────────────────
@@ -199,12 +217,8 @@ export async function publishQuizEvent(
   sessionId: string,
   event:     object
 ): Promise<void> {
-  try {
-    await redis.publish(
-      `quiz:${sessionId}:events`,
-      JSON.stringify(event)
-    )
-  } catch {
-    // non-fatal
-  }
+  await emitToSocketServer(
+    `quiz:${sessionId}:events`,
+    JSON.stringify(event)
+  )
 }
